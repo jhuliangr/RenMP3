@@ -53,7 +53,7 @@ def etiquetas(song, directorio):
             print('etiquetas artista guardadas')
         f.tag.save()   
 
-basura = [' (Www.FlowHot.Net)',' (Dj Ubi)', '(Xtreme 48-75-87-36)', ' (Www.FlowHoT.NeT)','(www.AbdelLaEsenciayEstudiosOdisea.com)', '(Abdel La Esencia Y Estudios Odisea)', ' (FlowActivo.Com)', '(Abdel La Esencia)', ' (WwW.BaniCrazy.NeT)']
+basura = [' (Www.FlowHot.Net)','{HD Studios}','(CrazY_BoyZ)',' (Dj Ubi)', '(Xtreme 48-75-87-36)', ' (Www.FlowHoT.NeT)','(www.AbdelLaEsenciayEstudiosOdisea.com)', '(Abdel La Esencia Y Estudios Odisea)', ' (FlowActivo.Com)', '(Abdel La Esencia)', ' (WwW.BaniCrazy.NeT)']
 #implementar funcion para que cuando de doble click en una cancion se abra...
 while True:
     event, values = window.read()
@@ -93,7 +93,7 @@ while True:
             for song in content:
                 if not os.path.isfile(os.path.join(directorio, song)) or not song.lower().endswith(('.mp3', '.m4a', '.wma','.aac', '.wmv', '.flac')):
                     continue
-                work = True
+                
                 for promocion in basura:
                     if promocion in song: 
                         # temp.replace('(www.AbdelLaEsenciayEstudiosOdisea.com)', '') #no esta funcionando.. pide ayuda
@@ -116,10 +116,14 @@ while True:
                         else:
                             cond = False
                             temporal+=j
+                    
                 
 
                 if cond == False:
+                    if temporal in content:
+                        temporal+=' borrar puto'
                     os.rename(os.path.join(directorio, song), os.path.join(directorio, temporal))
+                    # print(os.path.join(directorio, song),' con -> ',os.path.join(directorio, temporal))
                     
             #poner un mensaje emergente que diga que ha sido hecho con exito el renombramiento...
             emergente = sg.Window(title="Continuar",
@@ -148,6 +152,10 @@ while True:
             pass
         
 window.close()
+
+#crear excepcion para cuando hay un archivo con el mismo nombre de uno procesado
+
+
 
 
 # f = eyed3.load(file)
