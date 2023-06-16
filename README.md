@@ -1,6 +1,7 @@
 # RenMP3
-Aplicación para hacer la música más fácil de gestionar en la PC
 
-Básicamente lo que hace es quitar los números del principio de las canciones y los links al final de las mismas(Ej. www.flowhot.net) para que sean fácilmente manipuladas y ordenadas alfabéticamente
+Application to make musiceasier to manage on PC.
 
-Se está trabajando en quitar los links promocionales de los tags de la música
+Basically, what it does is remove the numbers at the beginning of the song names and the links at the end of them (e.g. "www.flowhot.net") so that they can be easily manipulated and sorted alphabetically.
+
+Efforts are being made to remove promotional links from the music tags.

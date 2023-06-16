@@ -16,7 +16,6 @@ file_list_column = [
         sg.Button('Renombrar todo', size=(12,2))
     ]
 ]
-
 layout = [
     [
         sg.Column(file_list_column)
@@ -39,18 +38,19 @@ def traer_archivos():
     window["-FILE LIST-"].update(fnames)
     return True, file_list
 
+#No se esta usando todavia
 def etiquetas(song, directorio):        
     f = eyed3.load(os.path.join(directorio, song))
     if f.tag != None:
         if  f.tag.title == 'EJE RECORD [53639408]':
             f.tag.title = ''
-            print('etiquetas titulo guardadas')
+            # print('etiquetas titulo guardadas')
         if  f.tag.album == 'EJE RECORD [53639408]':
             f.tag.album = ''
-            print('etiquetas album guardadas')
+            # print('etiquetas album guardadas')
         if  f.tag.artist == 'EJE RECORD [53639408]':
             f.tag.artist = ''
-            print('etiquetas artista guardadas')
+            # print('etiquetas artista guardadas')
         f.tag.save()   
 
 basura = [' (Www.FlowHot.Net)','{HD Studios}','(CrazY_BoyZ)',' (Dj Ubi)', '(Xtreme 48-75-87-36)', ' (Www.FlowHoT.NeT)','(www.AbdelLaEsenciayEstudiosOdisea.com)', '(Abdel La Esencia Y Estudios Odisea)', ' (FlowActivo.Com)', '(Abdel La Esencia)', ' (WwW.BaniCrazy.NeT)']
@@ -105,10 +105,7 @@ while True:
                         os.rename(os.path.join(directorio, song), os.path.join(directorio, temp))
                         song = temp
                 temporal = ''
-                cond = True #
-                # if song.lower().endswith(('.mp3')):
-                #     etiquetas(song, directorio)                                                 
-                
+                cond = True                                                
                 if song[0]>='0' and song[0]<='9':
                     for j in song:
                         if ((j>='0' and j<='9') or j == ' ' or j == '-' or j == '.') and cond:
