@@ -4,16 +4,16 @@ import os
 
 file_list_column = [
     [
-        sg.Text("Directorio de Musica"),
+        sg.Text("Music Directory"),
         sg.In(size=(25, 1), enable_events=True, key="-FOLDER-"),
-        sg.FolderBrowse('Buscar', s=(10,1))
+        sg.FolderBrowse('Search', s=(10,1))
     ],
     [
         sg.Listbox(
             values=[], enable_events=True, size=(40, 20),
             key="-FILE LIST-"
         ),sg.Text(),
-        sg.Button('Renombrar todo', size=(12,2))
+        sg.Button('Rename it all', size=(12,2))
     ]
 ]
 layout = [
@@ -22,11 +22,11 @@ layout = [
     ]
 ]
 
-window = sg.Window("Renombrador de Musica", layout)
+window = sg.Window("Music Renamer", layout)
 
 archivoSeleccionado = False
 array = []
-def traer_archivos():
+def bring_files():
     folder = values["-FOLDER-"]
     file_list = os.listdir(folder)
     fnames = [
@@ -38,73 +38,70 @@ def traer_archivos():
     window["-FILE LIST-"].update(fnames)
     return True, file_list
 
-#No se esta usando todavia
-def etiquetas(song, directorio):        
-    f = eyed3.load(os.path.join(directorio, song))
-    if f.tag != None:
-        if  f.tag.title == 'EJE RECORD [53639408]':
-            f.tag.title = ''
-            # print('etiquetas titulo guardadas')
-        if  f.tag.album == 'EJE RECORD [53639408]':
-            f.tag.album = ''
-            # print('etiquetas album guardadas')
-        if  f.tag.artist == 'EJE RECORD [53639408]':
-            f.tag.artist = ''
-            # print('etiquetas artista guardadas')
-        f.tag.save()   
+# not yet used
+# def etiquetas(song, directory):        
+#     f = eyed3.load(os.path.join(directory, song))
+#     if f.tag != None:
+#         if  f.tag.title == 'EJE RECORD [53639408]':
+#             f.tag.title = ''
+#         if  f.tag.album == 'EJE RECORD [53639408]':
+#             f.tag.album = ''            
+#         if  f.tag.artist == 'EJE RECORD [53639408]':
+#             f.tag.artist = ''
+            
+#         f.tag.save()   
 
-basura = [' (Www.FlowHot.Net)','{HD Studios}','(CrazY_BoyZ)',' (Dj Ubi)', '(Xtreme 48-75-87-36)', ' (Www.FlowHoT.NeT)','(www.AbdelLaEsenciayEstudiosOdisea.com)', '(Abdel La Esencia Y Estudios Odisea)', ' (FlowActivo.Com)', '(Abdel La Esencia)', ' (WwW.BaniCrazy.NeT)']
-#implementar funcion para que cuando de doble click en una cancion se abra...
+pirate_music_providers = [' (Www.FlowHot.Net)','{HD Studios}','(CrazY_BoyZ)',' (Dj Ubi)', '(Xtreme 48-75-87-36)', ' (Www.FlowHoT.NeT)','(www.AbdelLaEsenciayEstudiosOdisea.com)', '(Abdel La Esencia Y Estudios Odisea)', ' (FlowActivo.Com)', '(Abdel La Esencia)', ' (WwW.BaniCrazy.NeT)']
 while True:
     event, values = window.read()
     if event == "Exit" or event == sg.WIN_CLOSED:
         break
     if event == "-FOLDER-":
-        archivoSeleccionado, array = traer_archivos()
+        selected_file, array = bring_files()
         
         
-    if event == 'Renombrar todo':
-        if not archivoSeleccionado:
-            emergente = sg.Window(title="Continuar",
-                   layout=[[sg.Text('Debe seleccionar un directorio para poder hacer uso del programa')],
+    if event == 'Rename it all':
+        if not selected_file:
+            msg_window = sg.Window(title="msg window",
+                   layout=[[sg.Text('You must select a directory for using the program')],
                            [sg.Text('')],
                            [sg.Text('                                    '), sg.Button('Ok', s=(6,1))]],
                    margins=(10, 10))
             while True:
-                event, values = emergente.read()
+                event, values = msg_window.read()
                 if event == "Ok" or event == sg.WIN_CLOSED:
                     break
-            emergente.close()
-            #sustituir esto por un button disable...
+            msg_window.close()
+            # make a disable for not having to use this
         elif array == []:
-            emergente = sg.Window(title="Continuar",
-                   layout=[[sg.Text('El directorio seleccionado está completamente vacío')],
+            msg_window = sg.Window(title="msg window",
+                   layout=[[sg.Text('The actual directory is empty')],
                            [sg.Text('')],
                            [sg.Text('                             '), sg.Button('Ok', s=(6,1))]],
                    margins=(10, 10))
             while True:
-                event, values = emergente.read()
+                event, values = msg_window.read()
                 if event == "Ok" or event == sg.WIN_CLOSED:
                     break
-            emergente.close()
+            msg_window.close()
         else:
-            directorio = values["-FOLDER-"]
-            content = os.listdir(directorio)
+            directory = values["-FOLDER-"]
+            content = os.listdir(directory)
             for song in content:
-                if not os.path.isfile(os.path.join(directorio, song)) or not song.lower().endswith(('.mp3', '.m4a', '.wma','.aac', '.wmv', '.flac')):
+                if not os.path.isfile(os.path.join(directory, song)) or not song.lower().endswith(('.mp3', '.m4a', '.wma','.aac', '.wmv', '.flac')):
                     continue
                 
-                for promocion in basura:
+                for promocion in pirate_music_providers:
                     if promocion in song: 
-                        # temp.replace('(www.AbdelLaEsenciayEstudiosOdisea.com)', '') #no esta funcionando.. pide ayuda
+                        # temp.replace('(www.AbdelLaEsenciayEstudiosOdisea.com)', '')
                         temp = song[:song.find(promocion)]
                         if(song[-5]=='.'):
                             temp+='.flac'
                         else:
                             temp += song[-4:]
-                        os.rename(os.path.join(directorio, song), os.path.join(directorio, temp))
+                        os.rename(os.path.join(directory, song), os.path.join(directory, temp))
                         song = temp
-                temporal = ''
+                temp = ''
                 cond = True                                                
                 if song[0]>='0' and song[0]<='9':
                     for j in song:
@@ -112,32 +109,29 @@ while True:
                             continue
                         else:
                             cond = False
-                            temporal+=j
+                            temp+=j
                     
                 
 
                 if cond == False:
-                    if temporal in content:
-                        temporal+=' borrar puto'
-                    os.rename(os.path.join(directorio, song), os.path.join(directorio, temporal))
-                    # print(os.path.join(directorio, song),' con -> ',os.path.join(directorio, temporal))
+                    if temp in content:
+                        temp+=' to erase'
+                    os.rename(os.path.join(directory, song), os.path.join(directory, temp))
+                    # print(os.path.join(directory, song),' con -> ',os.path.join(directory, temp))
                     
-            #poner un mensaje emergente que diga que ha sido hecho con exito el renombramiento...
-            emergente = sg.Window(title="Continuar",
-                layout=[[sg.Text('La música ha sido renombrada con éxito')],
+            
+            msg_window = sg.Window(title="Msg window",
+                layout=[[sg.Text('your music has been renamed successfully :D')],
                         [sg.Text('')],
                         [sg.Text('                       '), sg.Button('Ok', s=(6,1))]],
                 margins=(10, 10))
             while True:
-                event, val = emergente.read()
+                event, val = msg_window.read()
                 if event == "Ok" or event == sg.WIN_CLOSED:
                     break
-            emergente.close()
-            traer_archivos()
-            #poner el nombre del artista en la propiedad nombre de artista y el titulo en el titulo
-            #eliminar flowhot, el transportador, abdel la escencia... etc
-        
-        
+            msg_window.close()
+            bring_files()
+            
         
         
     elif event == "-FILE LIST-":
@@ -164,3 +158,5 @@ window.close()
 #         f.tag.album="name_album"
 #         f.tag.save()
 #         os.rename(file, file.replace("yt1s.com - ",""))
+
+# implement a double click event for songs to open them
