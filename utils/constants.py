@@ -1,0 +1,1 @@
+PIRATE_MUSIC_PROVIDERS = [' (Www.FlowHot.Net)','{HD Studios}','(CrazY_BoyZ)',' (Dj Ubi)', '(Xtreme 48-75-87-36)', ' (Www.FlowHoT.NeT)','(www.AbdelLaEsenciayEstudiosOdisea.com)', '(Abdel La Esencia Y Estudios Odisea)', ' (FlowActivo.Com)', '(Abdel La Esencia)', ' (WwW.BaniCrazy.NeT)']
